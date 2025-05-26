@@ -8,6 +8,7 @@ public class Book {
     private String createdAt;
     private String title;
     private String authors;
+    private String cover;
     private String isbn;
     private String synopsis;
     private Status status = Status.ON;
