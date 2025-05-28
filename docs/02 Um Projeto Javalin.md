@@ -1,14 +1,14 @@
 # Um Projeto Javalin
 
 Vamos usar a metodologia "passo-a-passo" para criar um pequeno projeto didático de exemplo usando o framework _Javalin_.
-O projeto será um cadastro de livros que vamos chamar de "CRUDBooks" com uma API REST simples com JSON e com os seguintes requisitos:
+O projeto será um **cadastro de livros** que vamos chamar de "**CRUDBooks**" com uma API REST simples com JSON e com os seguintes requisitos:
 
 - Nome do projeto: `CRUDBooks`
 - IDE: `IntelliJ CE`
 - Framework HTTP: `javalin`
 - Gestão: `Maven`
 - Persistência: `H2 Database`
-- Otimizações: `Lombok`
+- Otimizações: `Lombok`, `HikariCP`, `Jackson`, ...
 
 ## Criando o Projeto
 
@@ -16,16 +16,16 @@ O projeto será um cadastro de livros que vamos chamar de "CRUDBooks" com uma AP
 2. Clique em `File → New Project` ou no botão `[New Project]`, dependendo do contexto atual
 3. No painel esquerdo, selecione **Maven Archetype**
 4. No painel direito:
-    - Name: `CRUDBooks`
-    - Location: `~\Documents\java`
-    - [x] Create Git repository
-    - JDK: `temirin-21` ou outro JDK 21
-    - Catalog: `Internal`
-    - Archetype: `org.apache.maven.archetypes:maven-archetype-quickstart`
-    - Version: `1.1`
-    - Advanced settings:
-        - GroupId: `com.crudbooks`
-        - ArtifactId: `api`
+   - Name: `CRUDBooks`
+   - Location: `~\Documents\java`
+   - [x] Create Git repository
+   - JDK: `temirin-21` ou outro JDK 21
+   - Catalog: `Internal`
+   - Archetype: `org.apache.maven.archetypes:maven-archetype-quickstart`
+   - Version: `1.1`
+   - Advanced settings:
+      - GroupId: `com.crudbooks`
+      - ArtifactId: `api`
 5. Clique em `[Create]`
 
 O IntelliJ irá gerar a estrutura básica de um projeto Maven.
@@ -70,19 +70,19 @@ Após a tag `</dependencies>`, adicione a tag abaixo que permite a compilação 
 
 ```xml
   <build>
-    <plugins>
+   <plugins>
       <!-- Plugin de compilação -->
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.11.0</version>
-        <configuration>
-          <source>15</source>
-          <target>15</target>
-        </configuration>
+         <groupId>org.apache.maven.plugins</groupId>
+         <artifactId>maven-compiler-plugin</artifactId>
+         <version>3.11.0</version>
+         <configuration>
+            <source>15</source>
+            <target>15</target>
+         </configuration>
       </plugin>
-    </plugins>
-  </build>
+   </plugins>
+</build>
 ```
 
 No final, seu `pom.xml` deve ser algo como:
@@ -92,67 +92,67 @@ No final, seu `pom.xml` deve ser algo como:
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.crudbooks</groupId>
-  <artifactId>api</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
+   <groupId>com.crudbooks</groupId>
+   <artifactId>api</artifactId>
+   <version>1.0-SNAPSHOT</version>
+   <packaging>jar</packaging>
 
-  <name>api</name>
-  <url>http://maven.apache.org</url>
+   <name>api</name>
+   <url>http://maven.apache.org</url>
 
-  <properties>
-    <maven.compiler.source>21</maven.compiler.source>
-    <maven.compiler.target>21</maven.compiler.target>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+   <properties>
+      <maven.compiler.source>21</maven.compiler.source>
+      <maven.compiler.target>21</maven.compiler.target>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+   </properties>
 
-  <dependencies>
-    <!-- Javalin - versão atual conforme Maven Central -->
-    <dependency>
-      <groupId>io.javalin</groupId>
-      <artifactId>javalin</artifactId>
-      <version>6.6.0</version>
-    </dependency>
+   <dependencies>
+      <!-- Javalin - versão atual conforme Maven Central -->
+      <dependency>
+         <groupId>io.javalin</groupId>
+         <artifactId>javalin</artifactId>
+         <version>6.6.0</version>
+      </dependency>
 
-    <!-- SLF4J - logging simples -->
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <version>2.0.13</version>
-    </dependency>
+      <!-- SLF4J - logging simples -->
+      <dependency>
+         <groupId>org.slf4j</groupId>
+         <artifactId>slf4j-simple</artifactId>
+         <version>2.0.13</version>
+      </dependency>
 
-    <!-- H2 Database -->
-    <dependency>
-      <groupId>com.h2database</groupId>
-      <artifactId>h2</artifactId>
-      <version>2.2.224</version>
-    </dependency>
+      <!-- H2 Database -->
+      <dependency>
+         <groupId>com.h2database</groupId>
+         <artifactId>h2</artifactId>
+         <version>2.2.224</version>
+      </dependency>
 
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <version>1.18.38</version>
-      <scope>provided</scope>
-    </dependency>
+      <dependency>
+         <groupId>org.projectlombok</groupId>
+         <artifactId>lombok</artifactId>
+         <version>1.18.38</version>
+         <scope>provided</scope>
+      </dependency>
 
-  </dependencies>
+   </dependencies>
 
-  <build>
-    <plugins>
-      <!-- Plugin de compilação -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.11.0</version>
-        <configuration>
-          <source>15</source>
-          <target>15</target>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+   <build>
+      <plugins>
+         <!-- Plugin de compilação -->
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.11.0</version>
+            <configuration>
+               <source>15</source>
+               <target>15</target>
+            </configuration>
+         </plugin>
+      </plugins>
+   </build>
 </project>
 ```
 

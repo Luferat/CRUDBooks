@@ -8,15 +8,14 @@ Vamos precisar instalar o **H2 Console" separadamente para acessar o banco de da
 - Acesse a pasta "h2\bin"
 - Selecione e copie o conteúdo dela
 - Cole na pasta raiz do projeto → `~\Documents\java\CRUDBooks`
-- Para testar no Windows, abra um terminal no IntelliJ e comande `h2.bat`
-- Se estiver no Linux ou MacOX, comande `h2.sh`
+- Para testar, abra um terminal no IntelliJ e comande `h2.bat`
 
 > Deve abrir o login do "H2 Console" no navegador padrão.
 
 - Altere o campo 'JDBC URL:' para `jdbc:h2:./data/crudbooks`
 - Clique em `[Connect]` para criar/conectar no banco de dados
 
-> Para acessar o "H2 Console", o endereço é `http://localhost:8082/`, mas lembre-se que o serviço dele deve estar rodando em um terminal.
+> Para acessar o "H2 Console", o endereço é `http://localhost:8082/`, mas lembre-se que ele deve estar rodando em um terminal a parte.
 
 ## Configuração da Conexão
 
@@ -142,10 +141,5 @@ public class App {
 Agora, rode `App` e verifique se o banco de dados (`data\crudbooks.mv.db`) é criado.
 Acesse o H2 Console (`http://localhosr:8082`) e veriique se a tabela `BOOKS` foi criada e contém alguns dados.
 
-Para testar o **HTTP**, no navegador, acesse `http://localhost:7000/` para ver uma página com algo como:
-
-```cmd
-API CRUD Books rodando!
-```
 ---
 [↑ Topo](#file-01-javalin-md)
