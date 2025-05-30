@@ -1,4 +1,4 @@
-package com.crudbooks.api.config;
+package com.crudbooks;
 
 public class Config {
     public static final String JDBC_URL = "jdbc:h2:./data/crudbooks;AUTO_SERVER=TRUE";

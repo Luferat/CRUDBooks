@@ -1,7 +1,4 @@
-package com.crudbooks.api.util;
-
-import com.crudbooks.api.config.Config;
-import com.crudbooks.api.model.Book;
+package com.crudbooks;
 
 import java.sql.*;
 import java.util.ArrayList;

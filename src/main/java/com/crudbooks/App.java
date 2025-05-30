@@ -1,11 +1,6 @@
 package com.crudbooks;
 
-import com.crudbooks.api.model.Book;
-import com.crudbooks.api.util.BookDAO;
-import com.crudbooks.api.util.DatabaseUtil;
-import com.crudbooks.api.util.ResponseUtil;
 import io.javalin.Javalin;
-import com.crudbooks.api.config.Config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.plugin.bundled.CorsPluginConfig;
 

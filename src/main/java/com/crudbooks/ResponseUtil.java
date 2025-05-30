@@ -1,4 +1,4 @@
-package com.crudbooks.api.util;
+package com.crudbooks;
 
 import java.util.HashMap;
 import java.util.Map;

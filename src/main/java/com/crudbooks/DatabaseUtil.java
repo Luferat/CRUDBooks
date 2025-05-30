@@ -1,6 +1,5 @@
-package com.crudbooks.api.util;
+package com.crudbooks;
 
-import com.crudbooks.api.config.Config;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 

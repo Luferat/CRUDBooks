@@ -1,4 +1,4 @@
-package com.crudbooks.api.model;
+package com.crudbooks;
 
 import lombok.Data;
 
