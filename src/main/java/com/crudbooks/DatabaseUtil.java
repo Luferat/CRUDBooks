@@ -12,12 +12,13 @@ public class DatabaseUtil {
     private static final HikariDataSource dataSource;
 
     static {
+        // O Hikari Data Source otimiza o acesso ao banco de dados, melhorando a performance
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl(Config.JDBC_URL);
         config.setUsername(Config.JDBC_USER);
         config.setPassword(Config.JDBC_PASSWORD);
-        config.setDriverClassName(Config.JDBC_DRIVER); // Explicitamente definir o driver
-        config.setMaximumPoolSize(10); // Defina um tamanho razoável para o pool
+        config.setDriverClassName(Config.JDBC_DRIVER); // Explicitamente define o driver
+        config.setMaximumPoolSize(10); // Define um tamanho razoável para o pool
         config.setAutoCommit(true); // Ou false, dependendo da sua necessidade
 
         dataSource = new HikariDataSource(config);

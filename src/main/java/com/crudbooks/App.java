@@ -12,24 +12,26 @@ public class App {
         BookDAO bookDAO = new BookDAO();
         ObjectMapper objectMapper = new ObjectMapper(); // Para serializar objetos em JSON
 
+        // Criação do aplicativo Javalin
         Javalin app = Javalin.create(config -> {
+            // Configuração de CORS
             config.bundledPlugins.enableCors(cors -> {
                 cors.addRule(CorsPluginConfig.CorsRule::anyHost);
             });
         }).start(Config.httpPort);
 
         // Página inicial do aplicativo
-        app.get("/", ctx -> ctx.result("API CRUD Books rodando!"));
+        app.get("/", ctx -> ctx.json(ResponseUtil.success(200, Config.APP_NAME + " rodando!")));
 
         // Lista todos os livros existentes
         app.get("/api/books", ctx -> {
             List<Book> books = bookDAO.getAllBooksOrderedByCreatedAt();
             if (books != null && !books.isEmpty()) {
-                ctx.json(ResponseUtil.success(200, "Lista de livros existentes obtida com sucesso.", books));
+                ctx.json(ResponseUtil.success(200, "Lista de livros obtida com sucesso.", books));
             } else if (books != null) {
-                ctx.json(ResponseUtil.success(200, "Nenhum livro existente encontrado.", books));
+                ctx.json(ResponseUtil.success(200, "Nenhum livro encontrado.", books));
             } else {
-                ctx.status(500).json(ResponseUtil.error(500, "Erro ao buscar livros existentes."));
+                ctx.status(500).json(ResponseUtil.error(500, "Erro ao listar livros."));
             }
         });
 
@@ -38,9 +40,9 @@ public class App {
             int bookId = ctx.pathParamAsClass("id", Integer.class).get();
             Book book = bookDAO.getBookById(bookId);
             if (book != null) {
-                ctx.json(ResponseUtil.success(200, "Livro existente encontrado.", book));
+                ctx.json(ResponseUtil.success(200, "Livro encontrado.", book));
             } else {
-                ctx.status(404).json(ResponseUtil.error(404, "Livro existente não encontrado (ou foi apagado)."));
+                ctx.status(404).json(ResponseUtil.error(404, "Livro não encontrado."));
             }
         });
 
@@ -50,7 +52,7 @@ public class App {
             if (bookDAO.logicalDeleteBook(bookId)) {
                 ctx.json(ResponseUtil.success(200, "Livro apagado com sucesso."));
             } else {
-                ctx.status(404).json(ResponseUtil.error(404, "Livro não encontrado para apagar."));
+                ctx.status(404).json(ResponseUtil.error(404, "Livro não encontrado."));
             }
         });
 
@@ -60,12 +62,12 @@ public class App {
                 Book newBook = ctx.bodyAsClass(Book.class);
                 Book createdBook = bookDAO.createBook(newBook);
                 if (createdBook != null) {
-                    ctx.status(201).json(ResponseUtil.success(201, "Livro criado com sucesso.", createdBook));
+                    ctx.status(201).json(ResponseUtil.success(201, "Livro cadastrado com sucesso.", createdBook));
                 } else {
-                    ctx.status(500).json(ResponseUtil.error(500, "Erro ao criar o livro."));
+                    ctx.status(500).json(ResponseUtil.error(500, "Erro ao cadastrar livro."));
                 }
             } catch (Exception e) {
-                ctx.status(400).json(ResponseUtil.error(400, "Dados de livro inválidos.", e.getMessage()));
+                ctx.status(400).json(ResponseUtil.error(400, "Dados do livro inválidos.", e.getMessage()));
             }
         });
 
@@ -77,10 +79,10 @@ public class App {
                 if (bookDAO.updateBook(bookId, updatedBook)) {
                     ctx.json(ResponseUtil.success(200, "Livro atualizado com sucesso."));
                 } else {
-                    ctx.status(404).json(ResponseUtil.error(404, "Livro não encontrado para atualizar."));
+                    ctx.status(404).json(ResponseUtil.error(404, "Livro não encontrado."));
                 }
             } catch (Exception e) {
-                ctx.status(400).json(ResponseUtil.error(400, "Dados de livro inválidos para atualização.", e.getMessage()));
+                ctx.status(400).json(ResponseUtil.error(400, "Dados do livro inválidos.", e.getMessage()));
             }
         });
     }
